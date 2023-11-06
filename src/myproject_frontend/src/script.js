@@ -39,8 +39,7 @@ function handleVote() {
           options[index].votes += 1;
           currentUser.hasVoted = true;
           displayOptions();
-          selectedOption.checked = false;
-          voteButton.disabled = true;
+          voteButton.disabled = true; // Disable the button after voting
       }
   }
 }
@@ -53,5 +52,8 @@ function login(username) {
   }
 }
 
-displayOptions();
+// Add an event listener to the "Vote" button
 voteButton.addEventListener("click", handleVote);
+
+// Call the displayOptions function to initialize the options
+displayOptions();
