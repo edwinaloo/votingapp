@@ -1,19 +1,37 @@
-import { myproject_backend } from "../../declarations/myproject_backend";
+const options = [
+  { text: "Pascal Omollo", votes: 0 },
+  { text: "Edwin Aloo", votes: 0 },
+  { text: "Augastine mwangi", votes: 0 },
+];
 
-document.querySelector("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const button = e.target.querySelector("button");
+const optionsContainer = document.getElementById("options");
+const voteButton = document.getElementById("voteButton");
 
-  const name = document.getElementById("name").value.toString();
+// Function to display options
+function displayOptions() {
+  optionsContainer.innerHTML = "";
+  options.forEach((option, index) => {
+      const optionDiv = document.createElement("div");
+      optionDiv.innerHTML = `
+          <label>
+              <input type="radio" name="vote" value="${index}">
+              ${option.text}
+          </label>
+      `;
+      optionsContainer.appendChild(optionDiv);
+  });
+}
 
-  button.setAttribute("disabled", true);
+// Function to handle votes
+function handleVote() {
+  const selectedOption = document.querySelector('input[name="vote"]:checked');
+  if (selectedOption) {
+      const index = parseInt(selectedOption.value, 10);
+      options[index].votes += 1;
+      displayOptions();
+      selectedOption.checked = false;
+  }
+}
 
-  // Interact with foo actor, calling the greet method
-  const greeting = await myproject_backend.greet(name);
-
-  button.removeAttribute("disabled");
-
-  document.getElementById("greeting").innerText = greeting;
-
-  return false;
-});
+displayOptions();
+voteButton.addEventListener("click", handleVote);
