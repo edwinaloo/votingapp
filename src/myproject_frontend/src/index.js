@@ -1,11 +1,19 @@
 const options = [
-  { text: "Pascal Omollo", votes: 0 },
-  { text: "Edwin Aloo", votes: 0 },
-  { text: "Augastine mwangi", votes: 0 },
+  { text: "Option A", votes: 0 },
+  { text: "Option B", votes: 0 },
+  { text: "Option C", votes: 0 },
 ];
 
 const optionsContainer = document.getElementById("options");
 const voteButton = document.getElementById("voteButton");
+
+// Simulated user data (for educational purposes)
+const users = [
+  { username: "user1", hasVoted: false },
+  { username: "user2", hasVoted: false },
+];
+
+let currentUser = null; // Represents the logged-in user
 
 // Function to display options
 function displayOptions() {
@@ -24,12 +32,24 @@ function displayOptions() {
 
 // Function to handle votes
 function handleVote() {
-  const selectedOption = document.querySelector('input[name="vote"]:checked');
-  if (selectedOption) {
-      const index = parseInt(selectedOption.value, 10);
-      options[index].votes += 1;
-      displayOptions();
-      selectedOption.checked = false;
+  if (currentUser && !currentUser.hasVoted) {
+      const selectedOption = document.querySelector('input[name="vote"]:checked');
+      if (selectedOption) {
+          const index = parseInt(selectedOption.value, 10);
+          options[index].votes += 1;
+          currentUser.hasVoted = true;
+          displayOptions();
+          selectedOption.checked = false;
+          voteButton.disabled = true;
+      }
+  }
+}
+
+// Simulated login function (for educational purposes)
+function login(username) {
+  currentUser = users.find(user => user.username === username);
+  if (currentUser) {
+      voteButton.disabled = currentUser.hasVoted;
   }
 }
 
