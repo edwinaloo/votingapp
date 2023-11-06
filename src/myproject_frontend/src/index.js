@@ -1,7 +1,7 @@
 const options = [
-  { text: "Option A", votes: 0 },
-  { text: "Option B", votes: 0 },
-  { text: "Option C", votes: 0 },
+  { text: "Pascal Omollo", votes: 0 },
+  { text: "Emily Sarina", votes: 0 },
+  { text: "Augastine Mwangi", votes: 0 },
 ];
 
 const optionsContainer = document.getElementById("options");
