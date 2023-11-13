@@ -1,7 +1,7 @@
 import Principal "mo:base/Principal";
 import Identity "dfx:mo:identity/Identity";
 import Optional "mo:base/Optional";
-import Tuple "dfc:mo/base/Tuple";
+import Tuple "dfx:mo/base/Tuple";
 
 //define a voter structure
 struct Voter {
@@ -29,12 +29,12 @@ struct Poll {
 }
 
 //  function to verify a voter's identity
-funct verifyVoterIdentity(): bool {
+func verifyVoterIdentity(): bool {
     // Get the current principal
     let principal: Principal = Identity.getPrincipal();
 
     //If the principal is not registered, return false
-    If (!canister.state.VoterRegistry.voters.contains(principal)) {
+    if (!canister.state.VoterRegistry.voters.contains(principal)) {
         return false;
     }
 
@@ -45,7 +45,7 @@ funct verifyVoterIdentity(): bool {
 
     // if the principal's identity is verified, return true;
     return true;
-}
+};
 
 // Define a function to create a new poll
 func create(poll: Poll): Unit {
@@ -66,3 +66,55 @@ func getAllRegisteredVoters(): []Voter {
 
     // Return a list of all registered voters
 }
+
+//function to register a vote for a given poll and choice
+func registerVote(pollId : int, choiceId: int) : Unit {
+    //verify the voter's identity
+    if (!verifyVoterIdentity()) {
+        return;
+    }
+
+    // Get the current state of the voter registry
+    let voterRegistry: VoterRegistry = canister.state.voterRegistry;
+
+    // Get voter
+    let voter: Voter = voterRegistry.voters[Identity.getPrincipal()];
+
+    //Ensure that the voter has not already voted in this poll
+    if (voter.voted) {
+        return;
+    }
+
+    // Get the poll
+    let poll: Poll = voterRegistry.polls[pollId];
+
+    // Update the vote count fpr the chosen option
+    poll.choices[choiceId].voteCount++;
+
+    // mark voter as having voted
+    voter.voted = true;
+
+    //update the state
+    canister.state.voterRegistry = voterRegistry;
+};
+
+// function to get the votes casted for each option in a poll
+func getPollVoteCounts(pollId : int) : map<int, int> {
+
+    // get the poll
+    let poll: Poll = canister.state.voterRegistry.polls[pollId];
+
+    // create a map to store the vote counts
+    let voteCounts: map<int, int> = {};
+
+    // iterate over the poll choices and get te vote count for each
+    for (let choiceId in poll.choices) {
+        voteCounts[choiceId] = poll.choices[choiceId].voteCount;
+    }
+
+    // return map of vote counts
+    return voteCounts;
+    
+};
+
+export {verifyVoterIdentity, createPoll, getAllRegisteredVoters, registerVote, getPollVoteCounts }
