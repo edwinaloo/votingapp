@@ -1,5 +1,2 @@
-actor {
-  public query func greet(name : Text) : async Text {
-    return "Hello, " # name # "!";
-  };
-};
+import {Identity} from "@dfinity/identity";
+import {Optional, Tuple}
