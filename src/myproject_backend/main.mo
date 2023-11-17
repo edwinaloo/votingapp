@@ -47,13 +47,13 @@ func verifyVoterIdentity(): Optional<bool> {
     return Optional.some(true);
 };
 
-// Define a function to create a new poll
-func create(poll: Poll): Unit {
+//function to create a new poll
+func createPoll(poll: Poll): Unit {
     // Get the current state of the voter registry
-    let voterRegistry: VoterRegistry = canister.state.voterRegistry;
+    let voterRegistry = canister.state.voterRegistry;
 
     // Add the new poll to the state
-    voterRegistry.polls.[poll.id] = poll;
+    voterRegistry.polls[poll.id] = poll;
 
     //Update the state
     canister.state.voterRegistry = voterRegistry;
