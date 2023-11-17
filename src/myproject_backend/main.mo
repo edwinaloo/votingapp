@@ -73,7 +73,7 @@ func getAllRegisteredVoters(): []Voter {
 //function to register a vote for a given poll and choice
 func registerVote(pollId : int, choiceId: int) : Result<Unit, Error> {
     //verify the voter's identity
-    let verificationResult = verifyVoterIdentity():
+    let verificationResult: Optional<bool> = verifyVoterIdentity();
 
     if (!verificationResult.unwrap()) {
         return #err(#otherError);
