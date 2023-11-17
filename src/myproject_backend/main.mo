@@ -71,7 +71,9 @@ func getAllRegisteredVoters(): []Voter {
 //function to register a vote for a given poll and choice
 func registerVote(pollId : int, choiceId: int) : Unit {
     //verify the voter's identity
-    if (!verifyVoterIdentity()) {
+    let verificationResult = verifyVoterIdentity():
+
+    if (!verificationResult.unwrap()) {
         return;
     }
 
@@ -79,7 +81,7 @@ func registerVote(pollId : int, choiceId: int) : Unit {
     let voterRegistry: VoterRegistry = canister.state.voterRegistry;
 
     // Get voter
-    let voter: Voter = voterRegistry.voters[Identity.getPrincipal()];
+    let voter: Voter = canister.state.voterRegistry.voters[Identity.getPrincipal()];
 
     //Ensure that the voter has not already voted in this poll
     if (voter.voted) {
