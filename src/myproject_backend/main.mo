@@ -110,7 +110,13 @@ func registerVote(pollId : int, choiceId: int) : Result<Unit, Error> {
 func getPollVoteCounts(pollId : int) : map<int, int> {
 
     // get the poll
-    let poll: Poll = canister.state.voterRegistry.polls[pollId];
+    let poll = canister.state.voterRegistry.polls[pollId];
+
+    // check if the poll exists
+    if(!poll) {
+        return {};
+        // error: poll not found 
+    }
 
     // create a map to store the vote counts
     let voteCounts: map<int, int> = {};
