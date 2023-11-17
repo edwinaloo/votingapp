@@ -29,22 +29,22 @@ struct Poll {
 }
 
 //  function to verify a voter's identity
-func verifyVoterIdentity(): bool {
+func verifyVoterIdentity(): Optional<bool> {
     // Get the current principal
     let principal: Principal = Identity.getPrincipal();
 
     //If the principal is not registered, return false
     if (!canister.state.VoterRegistry.voters.contains(principal)) {
-        return false;
+        return Optional.some(false);
     }
 
     // Verify the principal's identity using the Internet Identity Client Library
     if (!Identity.verifyPrincipal(principal)) {
-        return false;
+        return Optional.some(false);
     }
 
     // if the principal's identity is verified, return true;
-    return true;
+    return Optional.some(true);
 };
 
 // Define a function to create a new poll
