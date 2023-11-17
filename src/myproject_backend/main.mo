@@ -28,6 +28,8 @@ struct Poll {
     choices: map<int, Choice> ;
 }
 
+type Error = { #voterAlreadyVoted; #otherError };
+
 //  function to verify a voter's identity
 func verifyVoterIdentity(): Optional<bool> {
     // Get the current principal
@@ -69,12 +71,12 @@ func getAllRegisteredVoters(): []Voter {
 }
 
 //function to register a vote for a given poll and choice
-func registerVote(pollId : int, choiceId: int) : Unit {
+func registerVote(pollId : int, choiceId: int) : Result<Unit, Error> {
     //verify the voter's identity
     let verificationResult = verifyVoterIdentity():
 
     if (!verificationResult.unwrap()) {
-        return;
+        return #err(#otherError);
     }
 
     // Get the current state of the voter registry
@@ -85,7 +87,8 @@ func registerVote(pollId : int, choiceId: int) : Unit {
 
     //Ensure that the voter has not already voted in this poll
     if (voter.voted) {
-        return;
+        return #err(#voterAlreadyVoted);
+
     }
 
     // Get the poll
@@ -99,6 +102,8 @@ func registerVote(pollId : int, choiceId: int) : Unit {
 
     //update the state
     canister.state.voterRegistry = voterRegistry;
+
+    return #ok();
 };
 
 // function to get the votes casted for each option in a poll
