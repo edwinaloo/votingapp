@@ -62,9 +62,10 @@ func createPoll(poll: Poll): Unit {
 // Define a function to get all registered voters
 func getAllRegisteredVoters(): []Voter {
     // Get the current state of the voter registry
-    let voterRegistry: VoterRegistry = canister.state.voterRegistry;
+    let voterRegistry = canister.state.voterRegistry;
 
     // Return a list of all registered voters
+    return voterRegistry.voters.values;
 }
 
 //function to register a vote for a given poll and choice
