@@ -24,6 +24,7 @@ struct Choice {
 
 // define a poll structure
 struct Poll {
+    id:int;
     name: string;
     choices: map<int, Choice> ;
 }
