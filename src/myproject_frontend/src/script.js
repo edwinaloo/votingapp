@@ -1,5 +1,12 @@
-// Function to display options
-function displayOptions() {
+import { Actor, HttpAgent } from '@dfinity/agent';
+import { myproject_backend } from '/src/myproject_backend/main.mo'; // Update the path
+
+const canisterId = 'bw4dl-smaaa-aaaaa-qaacq-cai';
+
+const agent = new HttpAgent();
+const canister = Actor.createActor(myproject_backend, { agent, canisterId });
+
+document.addEventListener("DOMContentLoaded", function () {
     // Simulated data for options
     const optionsData = [
         { id: 1, text: "Option 1", votes: 0 },
@@ -19,61 +26,24 @@ function displayOptions() {
         `;
         optionsContainer.appendChild(optionDiv);
     });
-}
 
-// Function to handle votes
-function handleVote() {
-    const selectedOption = document.querySelector('input[name="vote"]:checked');
-    if (selectedOption) {
-        const optionId = parseInt(selectedOption.value, 10);
-        // Simulated vote submission (replace with actual logic)
-        console.log(`Voted for option ${optionId}`);
-    } else {
-        console.log("Please select an option before voting.");
+    // Event listener for the Vote button
+    const voteButton = document.getElementById("voteButton");
+    voteButton.addEventListener("click", handleVote);
+
+    // Function to handle votes
+    async function handleVote() {
+        const selectedOption = document.querySelector('input[name="vote"]:checked');
+        if (selectedOption) {
+            const optionId = parseInt(selectedOption.value, 10);
+            
+            // Simulated vote submission (replace with actual logic)
+            const result = await canister.voteFunction(optionId);
+            console.log(result);
+
+            // Update UI or perform additional actions based on the result
+        } else {
+            console.log("Please select an option before voting.");
+        }
     }
-}
-
-// Function to display user comments and discussions
-function displayComments() {
-    // Simulated data for comments
-    const commentsData = [
-        { username: "User1", comment: "This is great!" },
-        { username: "User2", comment: "I love it!" },
-        { username: "User3", comment: "Not bad." },
-    ];
-
-    const commentsContainer = document.getElementById("comments");
-
-    commentsData.forEach((comment) => {
-        const commentDiv = document.createElement("div");
-        commentDiv.innerHTML = `<strong>${comment.username}:</strong> ${comment.comment}`;
-        commentsContainer.appendChild(commentDiv);
-    });
-}
-
-// Function to display the leaderboard
-function displayLeaderboard() {
-    // Simulated data for the leaderboard
-    const leaderboardData = [
-        { rank: 1, option: "Option 1", votes: 10 },
-        { rank: 2, option: "Option 2", votes: 8 },
-        { rank: 3, option: "Option 3", votes: 5 },
-    ];
-
-    const leaderboardContainer = document.getElementById("leaderboard");
-
-    leaderboardData.forEach((entry) => {
-        const entryDiv = document.createElement("div");
-        entryDiv.innerHTML = `<strong>${entry.rank}. ${entry.option}:</strong> ${entry.votes} votes`;
-        leaderboardContainer.appendChild(entryDiv);
-    });
-}
-
-// Event listener for the Vote button
-const voteButton = document.getElementById("voteButton");
-voteButton.addEventListener("click", handleVote);
-
-// Initialize the UI with options, comments, and leaderboard
-displayOptions();
-displayComments();
-displayLeaderboard();
+});

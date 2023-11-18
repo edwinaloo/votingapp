@@ -1,14 +1,15 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     margin: 20px;
+    text-align: center;
 }
 
 h1 {
-    color: #3498db;
+    color: #333;
 }
 
 #options {
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 label {
@@ -17,25 +18,11 @@ label {
 }
 
 #voteButton {
-    background-color: #2ecc71;
-    color: #fff;
-    padding: 10px 15px;
-    font-size: 16px;
+    margin-top: 10px;
+    padding: 10px;
     cursor: pointer;
 }
 
-#comments {
+#comments, #leaderboard {
     margin-top: 20px;
-}
-
-#comments div {
-    margin-bottom: 10px;
-}
-
-#leaderboard {
-    margin-top: 20px;
-}
-
-#leaderboard div {
-    margin-bottom: 10px;
 }
